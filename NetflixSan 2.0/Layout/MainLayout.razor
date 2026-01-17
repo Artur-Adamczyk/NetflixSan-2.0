@@ -1,0 +1,46 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Nav
+
+<nav style="background:#111;padding:10px;color:white;display:flex;justify-content:space-between;align-items:center;">
+    <div>
+        <a href="/" style="color:#e50914;font-weight:bold;text-decoration:none;">NetflixSan</a>
+    </div>
+
+    <div>
+        @if (Auth != null && Auth.IsLoggedIn)
+        {
+            <span>Witaj, @Auth.Username!</span>
+            <button @onclick="Logout" style="margin-left:10px; padding:5px 10px; cursor:pointer;"> Wyloguj </button>
+        }
+        else
+        {
+            <a href="/login" style="color:white;text-decoration:none;">Zaloguj</a>
+        }
+    </div>
+</nav>
+
+<div class="page">
+    <main>
+        <div class="top-row px-4" style="display:flex; justify-content: flex-end; padding: 10px;">
+            <a href="https://artur-profile-card.netlify.app/" 
+               style="color:#8e8081; padding: 5px 15px; border: 1px solid #ccc; background:#F0F0F0; text-decoration:none;" 
+               target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+    
+</div>
+
+@code {
+   
+    [Inject] private NetflixSan_2._0.Series.FakeAuthService Auth { get; set; } = default!;
+
+    private void Logout()
+    {
+        Auth.Logout();
+        Nav.NavigateTo("/login", true);
+    }
+}

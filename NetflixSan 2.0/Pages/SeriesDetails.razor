@@ -1,0 +1,40 @@
+﻿@page "/series/{id:int}"
+@using NetflixSan_2._0.Models
+@inject NavigationManager NavManager
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private SeriesDTO? series;
+
+    protected override void OnInitialized()
+    {
+        series = FakeDatabase.Series.FirstOrDefault(s => s.Id == Id);
+    }
+}
+
+  @if (series is null)
+{
+    <h2>Nie znaleziono serialu </h2>
+    <button 
+        @onclick='() => NavManager.NavigateTo("/series")'
+        style="padding:8px 14px; background:#e50914; border:none; color:white; border-radius:4px;">
+        Wróć do listy
+    </button>
+}
+
+else
+{
+    <div style="display:flex;gap:30px;padding:20px;">
+        <img src="@series.ImageUrl" alt="@series.Title" style="width:300px;border-radius:8px;" />
+        <div>
+            <h1 style="color:#e50914;">@series.Title</h1>
+            <p><strong>Gatunek:</strong> @series.Category</p>
+            <p style="max-width:600px;">@series.Description</p>
+            <button @onclick='() => NavManager.NavigateTo("/series")'
+                    style="padding:8px 14px;background:#e50914;border:none;color:white;border-radius:4px;">
+                ⬅ Powrót
+            </button>
+        </div>
+    </div>
+}

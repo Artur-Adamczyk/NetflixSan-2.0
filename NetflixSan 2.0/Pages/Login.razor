@@ -1,0 +1,56 @@
+﻿@page "/login"
+@inject NetflixSan_2._0.Series.FakeAuthService Auth
+@inject NavigationManager Nav
+
+<h3 class="login-title">Zaloguj się</h3>
+
+@if (!Auth.IsLoggedIn)
+{
+    <div class="login-box">
+        <input @bind="username" placeholder="Login" class="form-control" />
+        <input @bind="password" placeholder="Hasło" type="password" class="form-control" />
+
+        <button @onclick="LoginUser" class="btn-login">
+            Zaloguj
+        </button>
+
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <p class="error-text">@error</p>
+        }
+    </div>
+}
+else
+{
+    <p class="welcome-text">
+        Witaj, <strong>@Auth.Username</strong>! 👋
+    </p>
+
+    <button @onclick="LogoutUser" class="btn-logout">
+        Wyloguj
+    </button>
+}
+
+@code {
+    private string username = "";
+    private string password = "";
+    private string error = "";
+
+    private void LoginUser()
+    {
+        if (Auth.Login(username, password))
+        {
+            Nav.NavigateTo("/series");
+        }
+        else
+        {
+            error = "Niepoprawny login lub hasło.";
+        }
+    }
+
+    private void LogoutUser()
+    {
+        Auth.Logout();
+        Nav.NavigateTo("/");
+    }
+}

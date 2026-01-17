@@ -1,0 +1,42 @@
+.login-title {
+    margin-bottom: 20px;
+}
+
+.login-box {
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-login {
+    padding: 8px 14px;
+    background: #e50914;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+    .btn-login:hover {
+        background: #f6121d;
+    }
+
+.btn-logout {
+    padding: 8px 14px;
+    background: #555;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.error-text {
+    color: red;
+    font-size: 0.9rem;
+}
+
+.welcome-text {
+    margin-bottom: 10px;
+}

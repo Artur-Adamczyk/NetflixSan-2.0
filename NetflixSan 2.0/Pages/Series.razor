@@ -1,0 +1,164 @@
+﻿@page "/series"
+@inject NetflixSan_2._0.Series.FakeAuthService Auth
+@inject NavigationManager Nav
+@using NetflixSan_2._0.Models
+
+<div class="series-page">
+
+    <h1 class="title">Mini Netflix</h1>
+
+    <!-- ===== FILTRY (ZAWSZE WIDOCZNE) ===== -->
+    <div class="filter-bar">
+        <div class="search-box">
+            <input class="search"
+                   @bind="searchTerm"
+                   @bind:event="oninput"
+                   placeholder="Tytuły..." />
+        </div>
+
+        <div class="category-filters">
+            <button class="filter-btn @(selectedCategory == "" ? "active" : "")"
+                    @onclick='() => SelectCategory("")'>
+                Wszystkie
+            </button>
+
+            @foreach (var cat in AllCategories)
+            {
+                <button class="filter-btn @(selectedCategory == cat ? "active" : "")"
+                        @onclick="() => SelectCategory(cat)">
+                    @cat
+                </button>
+            }
+        </div>
+    </div>
+
+   
+    @if (IsLoading)
+    {
+        <div class="loading-state">
+
+            <div class="series-grid">
+                @for (int i = 0; i < 8; i++)
+                {
+                    <div class="series-card skeleton">
+                        <div class="skeleton-img"></div>
+                    </div>
+                }
+            </div>
+
+            <div class="netflix-loader">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <p class="loading-text">
+                Proszę czekać, trwa ładowanie zawartości…
+            </p>
+        </div>
+    }
+    else
+    {
+       
+        <section class="content-section">
+            <h2 class="section-title">
+                @(string.IsNullOrEmpty(selectedCategory)
+                    ? "Twoja biblioteka"
+                    : $"Seriale: {selectedCategory}")
+            </h2>
+
+            <div class="series-grid">
+                @foreach (var s in FilteredSeries)
+                {
+                    <div class="series-card">
+                        <div class="card-img-wrapper">
+                            <img src="@s.ImageUrl" alt="@s.Title" />
+                        </div>
+
+                        <div class="card-info">
+                            <a href="/series/@s.Id">
+                                <h3>@s.Title</h3>
+                            </a>
+                            <span class="category">@s.Category</span>
+                            <p class="desc">@s.Description</p>
+                        </div>
+                    </div>
+                }
+
+                @if (!FilteredSeries.Any())
+                {
+                    <p class="no-results">
+                        Nie znaleźliśmy nic w tej kategorii…
+                    </p>
+                }
+            </div>
+        </section>
+
+      
+        @if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            <section class="content-section upcoming">
+                <h2 class="section-title">Już wkrótce</h2>
+
+                <div class="series-grid">
+                    @foreach (var f in FakeTiles)
+                    {
+                        <div class="series-card fake">
+                            <div class="fake-img-placeholder">
+                                <div class="play-icon">▶</div>
+                            </div>
+
+                            <div class="card-info">
+                                <h3>@f.Title</h3>
+                                <span class="badge">Original</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+    }
+
+</div>
+
+@code {
+    private bool IsLoading = true;
+    private string searchTerm = string.Empty;
+    private string selectedCategory = string.Empty;
+
+    private List<string> AllCategories => FakeDatabase.Series
+        .Select(s => s.Category)
+        .Distinct()
+        .ToList();
+
+    private IEnumerable<SeriesDTO> FilteredSeries =>
+        FakeDatabase.Series.Where(s =>
+            (string.IsNullOrWhiteSpace(searchTerm)
+                || s.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+            && (string.IsNullOrWhiteSpace(selectedCategory)
+                || s.Category == selectedCategory));
+
+    private void SelectCategory(string cat) => selectedCategory = cat;
+
+    private List<FakeTile> FakeTiles = new()
+    {
+        new("🔥 Nowy hit wkrótce"),
+        new("🎬 Serial oryginalny NetflixSan"),
+        new("⭐ Top 10 nadchodzących"),
+        new("🚀 Sci-Fi w produkcji")
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!Auth.IsLoggedIn)
+        {
+            Nav.NavigateTo("/login", true);
+            return;
+        }
+
+        await Task.Delay(800);
+        IsLoading = false;
+    }
+
+    private record FakeTile(string Title);
+}

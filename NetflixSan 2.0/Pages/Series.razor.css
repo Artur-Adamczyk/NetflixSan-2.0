@@ -1,0 +1,156 @@
+.series-page {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.title {
+    color: #e50914;
+    margin-bottom: 20px;
+}
+
+
+.filter-bar {
+    margin-bottom: 30px;
+}
+
+.search {
+    padding: 10px 14px;
+    border-radius: 4px;
+    border: none;
+    width: 300px;
+    background: #222;
+    color: white;
+}
+
+
+.category-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.filter-btn {
+    background: rgba(255,255,255,0.08);
+    color: #ccc;
+    border: 1px solid #333;
+    padding: 8px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+    .filter-btn:hover {
+        background: rgba(255,255,255,0.2);
+        color: white;
+    }
+
+    .filter-btn.active {
+        background: #e50914;
+        border-color: #e50914;
+        color: white;
+    }
+
+.series-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+
+.series-card {
+    background: #141414;
+    border-radius: 8px;
+    padding: 10px;
+    width: 200px;
+    transition: transform 0.25s ease;
+}
+
+    .series-card:hover {
+        transform: scale(1.08);
+    }
+
+    .series-card img {
+        width: 100%;
+        border-radius: 6px;
+    }
+
+    .series-card h3 {
+        margin: 10px 0 4px;
+        font-size: 1rem;
+    }
+
+.category {
+    font-size: 0.8rem;
+    color: #b3b3b3;
+}
+
+.desc {
+    font-size: 0.8rem;
+    color: #ccc;
+}
+
+.skeleton-img {
+    height: 120px;
+    border-radius: 6px;
+    background: linear-gradient( 90deg, #222 25%, #333 37%, #222 63% );
+    background-size: 400% 100%;
+    animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -400px 0;
+    }
+
+    100% {
+        background-position: 400px 0;
+    }
+}
+
+
+.loading-state {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.loading-text {
+    margin-top: 20px;
+    color: #aaa;
+    animation: pulse 1.4s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: .4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: .4;
+    }
+}
+
+
+.series-card.fake {
+    opacity: 0.85;
+    border: 1px dashed #333;
+}
+
+.fake-img-placeholder {
+    height: 120px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.play-icon {
+    font-size: 2rem;
+    color: #777;
+}
